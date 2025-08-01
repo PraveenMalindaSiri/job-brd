@@ -18,29 +18,22 @@
                 <div>
                     <div>Experience</div>
                     <div>
-                        <label for="experience" class="flex items-center">
-                            <input type="radio" name="experience" id="" value="" $@checked(!request("experience"))>
-                            <span class="ml-2">All</span>
-                        </label>
-
-                        <label for="experience" class="flex items-center">
-                            <input type="radio" name="experience" id="" value="entry">
-                            <span class="ml-2">Entry</span>
-                        </label>
-
-                        <label for="experience" class="flex items-center">
-                            <input type="radio" name="experience" id="" value="intermediate">
-                            <span class="ml-2">Intermediate</span>
-                        </label>
-
-                        <label for="experience" class="flex items-center">
-                            <input type="radio" name="experience" id="" value="senior">
-                            <span class="ml-2">Senior</span>
-                        </label>
+                        <x-radio-group name="experience" :options="array_combine(
+                            array_map('ucfirst', \App\Models\MyJob::$experience),
+                            \App\Models\MyJob::$experience,
+                        )" />
+                    </div>
+                </div>
+                <div>
+                    <div>Category</div>
+                    <div>
+                        <x-radio-group name="category" :options="\App\Models\MyJob::$category" />
                     </div>
                 </div>
             </div>
-            <button class="btn w-full">Filter</button>
+            <x-button class="w-full py-3">
+                Filter
+            </x-button>
         </form>
     </x-card>
 
