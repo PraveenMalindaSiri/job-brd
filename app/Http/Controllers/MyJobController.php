@@ -13,22 +13,9 @@ class MyJobController extends Controller
      */
     public function index()
     {
-        $jobs = MyJob::query();
-        $jobs->when(request('search'), function ($query) {
-            $query->where(function ($query) {
-                $query->where('title', 'like', "%" . request('search') . "%")->orWhere('description', 'like', "%" . request('search') . "%");
-            });  // just searching using text and the where cluse fix the logical operation issue and wont ignore text parameters title and description
-        })->when(request('min_salary'), function ($query) {
-            $query->where('salary', '>=', request('min_salary'));
-        })->when(request('max_salary'), function ($query) {
-            $query->where('salary', '<=', request('max_salary'));
-        })->when(request('experience'), function ($query) {
-            $query->where('experience', request('experience'));
-        })->when(request('category'), function ($query) {
-            $query->where('category', request('category'));
-        });
+        $filters = request()->only('search', 'min_salary', 'max_salary', 'experience', 'category');
 
-        return view('jobs.index', ['jobs' => $jobs->get()]);
+        return view('jobs.index', ['jobs' => MyJob::filter($filters)->get()]);
     }
 
     /**
