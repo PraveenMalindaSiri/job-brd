@@ -25,7 +25,7 @@
         </button>
     @endif
 
-    <input x-ref="input-{{ $name }}" type="text" name="{{ $name }}" id="{{ $name }}"
-        placeholder="{{ $placeholder }}" value="{{ $value }}"
+    <input x-ref="input-{{ $name }}" type="{{ $type }}" name="{{ $name }}"
+        id="{{ $name }}" placeholder="{{ $placeholder }}" value="{{ $value }}"
         class="w-full rounded-md border-0 p-2 text-sm ring-1 ring-slate-300 placeholder:text-blue-400 focus:ring-2 focus:ring-blue-400" />
 </div>

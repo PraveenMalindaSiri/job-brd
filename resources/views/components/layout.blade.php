@@ -10,6 +10,26 @@
 </head>
 
 <body class="bg-gradient-to-br from-sky-300 via-[#00f0ff] to-[#004182] text-slate-900 mx-60">
+    <nav class="mb-5 flex justify-between text-lg ">
+        <ul>
+            <li><a href="{{ route('jobs.index') }}">Home</a></li>
+        </ul>
+
+        <ul class="flex space-x-2">
+            @auth
+                <li>{{ auth()->user()->name ?? 'Guest' }}</li>
+                <li>
+                    <form action="{{ route('auth.destroy') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button>Logout</button>
+                    </form>
+                </li>
+            @else
+                <li><a href="{{ route('auth.create') }}">Sign In</a></li>
+            @endauth
+        </ul>
+    </nav>
     {{ $slot }}
 </body>
 
