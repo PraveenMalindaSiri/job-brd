@@ -3,4 +3,26 @@
     <x-job-card :$job>
         <p class="text-sm text-slate-700 mb-3"> {!! nl2br(e($job->description)) !!} </p>
     </x-job-card>
+
+    <x-card class="mb-4">
+        <h2 class="mb-4 text-lg font-medium">More jobs from {{ $job->employer->company_name }}</h2>
+
+        <div class="text-sm">
+            @foreach ($job->employer->jobs as $otherJob)
+                <div class="mb-4 flex justify-between">
+                    <div>
+                        <div>
+                            <a href="{{ route('jobs.show', $otherJob) }}" class="hover:text-blue-600">{{ $otherJob->title }}</a>
+                        </div>
+                        <div class="text-xs text-slate-500">
+                            {{ $otherJob->created_at->diffForHumans() }}
+                        </div>
+                    </div>
+                    <div>
+                        ${{ number_format($otherJob->salary) }}
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </x-card>
 </x-layout>

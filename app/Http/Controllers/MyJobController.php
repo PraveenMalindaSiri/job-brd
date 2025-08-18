@@ -39,7 +39,7 @@ class MyJobController extends Controller
      */
     public function show(MyJob $job)
     {
-        return view('jobs.show', ['job' => $job->load('employer')]);
+        return view('jobs.show', ['job' => $job->load('employer.jobs')]);
     }
 
     /**
