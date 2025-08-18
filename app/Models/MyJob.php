@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as BaseBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MyJob extends Model
 {
@@ -14,11 +15,18 @@ class MyJob extends Model
     public static array $experience = ['entry', 'intermediate', 'senior'];
     public static array $category = ['IT', 'Finance', 'Sales', 'Marketing'];
 
+    public function employer(): BelongsTo
+    {
+        return $this->belongsTo(Employer::class);
+    }
     public function scopeFilter(BaseBuilder|EloquentBuilder $query, array $filters): BaseBuilder|EloquentBuilder
     {
         return $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%" . $search . "%")->orWhere('description', 'like', "%" . $search . "%");
+                $query->where('title', 'like', "%" . $search . "%")
+                    ->orWhere('description', 'like', "%" . $search . "%")->orWhereHas('employer', function ($query) use ($search) {
+                        $query->where('company_name', 'like', '%' . $search . '%');
+                    });
             });  // just searching using text and the where cluse fix the logical operation issue and wont ignore text parameters title and description
         })->when($filters['min_salary'] ?? null, function ($query, $minSalary) {
             $query->where('salary', '>=', $minSalary);
