@@ -2,6 +2,13 @@
     <x-breadcrumbs class="mb-4" :links="['Jobs' => route('jobs.index'), $job->title => '#']" />
     <x-job-card :$job>
         <p class="text-sm text-slate-700 mb-3"> {!! nl2br(e($job->description)) !!} </p>
+
+        @can('apply', $job)
+            <x-link-button :href="route('job.application.create', $job)">Apply</x-link-button>
+        @else
+            <div class="text-center text-sm text-blue-800">You've already appllied to this job!!!</div>
+        @endcan
+
     </x-job-card>
 
     <x-card class="mb-4">
@@ -12,7 +19,8 @@
                 <div class="mb-4 flex justify-between">
                     <div>
                         <div>
-                            <a href="{{ route('jobs.show', $otherJob) }}" class="hover:text-blue-600">{{ $otherJob->title }}</a>
+                            <a href="{{ route('jobs.show', $otherJob) }}"
+                                class="hover:text-blue-600">{{ $otherJob->title }}</a>
                         </div>
                         <div class="text-xs text-slate-500">
                             {{ $otherJob->created_at->diffForHumans() }}
