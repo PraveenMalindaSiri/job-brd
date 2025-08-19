@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MyJobApplicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user(); // the way to stop IDE red colored user
+
+        return view('my_job_application.index', [
+            'applications' => $user->jobApplications()->with([
+                'job' => fn($q) => $q->withCount('jobApplications')->withAvg('jobApplications', 'expected_salary'),
+                'job.employer'
+            ])->latest()->get() ?? collect()
+        ]);
     }
 
     /**
