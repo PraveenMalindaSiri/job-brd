@@ -38,7 +38,7 @@
     @if (session('success'))
         <div role="alert" class="py-5 my-8 rounded-md border-l-4 border-green-600 bg-green-400 text-green-900">
             <p class="font-bold pl-10">Success!!!</p>
-            <p>{{ session('successs') }}</p>
+            <p class="pl-10">{{ session('success') }}</p>
         </div>
     @endif
 
