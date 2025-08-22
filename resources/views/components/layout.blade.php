@@ -10,26 +10,25 @@
 </head>
 
 <body class="bg-gradient-to-br from-sky-300 via-[#00f0ff] to-[#004182] text-slate-900 mx-60">
-    <nav class="mb-5 flex justify-between text-lg ">
+    <nav class="mb-5 flex justify-between text-lg mt-10">
         <ul>
-            <li><a href="{{ route('jobs.index') }}">Home</a></li>
+            <li><a href="{{ route('jobs.index') }}" class="hover:text-white border p-2 rounded-xl">Home</a></li>
         </ul>
 
         <ul class="flex space-x-2">
             @auth
                 <li>
-                    <a href="{{ route('my-job-application.index') }}">{{ auth()->user()->name ?? 'Guest' }}:
-                        Applications
-                    </a>
+                    <a class="hover:text-white border p-2 rounded-xl"
+                        href="{{ route('my-job-application.index') }}">{{ auth()->user()->name ?? 'Guest' }}</a>
                 </li>
                 <li>
-                    <a href="{{ route('my-job.index') }}">My Jobs</a>
+                    <a href="{{ route('my-job.index') }}" class="hover:text-white border p-2 rounded-xl">My Jobs</a>
                 </li>
                 <li>
                     <form action="{{ route('auth.destroy') }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button>Logout</button>
+                        <button class="hover:text-red-600 hover:underline">Logout</button>
                     </form>
                 </li>
             @else

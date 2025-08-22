@@ -13,6 +13,11 @@ class MyJobPolicy
         return true;
     }
 
+    public function viewAnyEmployer(User $user): bool
+    {
+        return true;
+    }
+
     /**
      * Determine whether the user can view the model.
      */
@@ -26,15 +31,23 @@ class MyJobPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, MyJob $myJob): bool
+    public function update(User $user, MyJob $myJob): bool|Response
     {
-        return false;
+        if ($myJob->employer->user_id !== $user->id) {
+            return false;
+        }
+
+        if ($myJob->jobApplications()->count() > 0) {
+            return Response::deny('Cannot change the job which has applications');
+        }
+
+        return true;
     }
 
     /**
@@ -42,7 +55,7 @@ class MyJobPolicy
      */
     public function delete(User $user, MyJob $myJob): bool
     {
-        return false;
+        return $myJob->employer->user_id !== $user->id;
     }
 
     /**
@@ -50,7 +63,7 @@ class MyJobPolicy
      */
     public function restore(User $user, MyJob $myJob): bool
     {
-        return false;
+        return $myJob->employer->user_id !== $user->id;
     }
 
     /**
@@ -58,7 +71,7 @@ class MyJobPolicy
      */
     public function forceDelete(User $user, MyJob $myJob): bool
     {
-        return false;
+        return $myJob->employer->user_id !== $user->id;
     }
 
     public function apply(User $user, MyJob $job): bool

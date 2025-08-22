@@ -4,9 +4,12 @@
          <p class="text-slate-500"> ${{ number_format($job->salary) }} </p>
      </div>
      <div class="flex justify-between text-sm text-slate-500 items-center">
-         <div class="flex space-x-3">
+         <div class="flex items-center space-x-3">
              <p> {{ $job->employer->company_name }} </p>
              <p>{{ $job->location }}</p>
+             @if ($job->deleted_at)
+                 <span class="text-sm text-red-800">Deleted</span>
+             @endif
          </div>
          <div class="flex text-xs space-x-2">
              <x-tag> <a
